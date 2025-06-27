@@ -92,7 +92,7 @@ products.forEach((product)=>{
           </div>
 
           <div class="product-quantity-container">
-            <select>
+            <select class="js-select-quantity-${product.id}">
               <option selected value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -108,7 +108,7 @@ products.forEach((product)=>{
 
           <div class="product-spacer"></div>
 
-          <div class="added-to-cart">
+          <div class="added-to-cart added-${product.id}">
             <img src="images/icons/checkmark.png">
             Added
           </div>
@@ -128,10 +128,13 @@ console.log(pros);
 document.querySelector('.js-products-grid').innerHTML=pros;
 
 //2. make cart button interactive
+//4. make the select options also interactivw when selected..total quantity should sum these also
 document.querySelectorAll(".adc-btn").forEach((button)=>{
   button.addEventListener('click',()=>{
     const productId= button.dataset.productId;
     let matchingItem;
+    const selectQuantity = document.querySelector(`.js-select-quantity-${productId}`);
+    const quantity = Number(selectQuantity.value);
     cartCont.forEach((item)=>{
       if(productId === item.productId){
         matchingItem=item;
@@ -139,14 +142,22 @@ document.querySelectorAll(".adc-btn").forEach((button)=>{
     });
 
     if(matchingItem){
-      matchingItem.quantity= Number(matchingItem.quantity)+1;
+      matchingItem.quantity+=quantity;
     }
     else{
       cartCont.push({
-      productId:productId,
-      quantity:1,
+      productId,
+      quantity,
     });
     }
+    let addedEle = document.querySelector(`.added-${productId}`);
+    let timeoutId = null;
+    if(timeoutId != null){
+      clearTimeout(timeoutId);
+    }
+    timeoutId=setTimeout(()=>addedEle.classList.remove('new-added'),1500);
+    addedEle.classList.add('new-added');
+
     
     //3.  make cart quantity interactive
 let totalQuantity = 0;
