@@ -1,4 +1,5 @@
-import {cartCont as cart} from '../data/cart.js';
+import {cartCont,addToCart,buttonAdded} from '../data/cart.js';
+import {products} from '../data/products.js';
 // const info = [
 //   {
 //     image: "images/products/athletic-cotton-socks-6-pairs.jpg",
@@ -69,7 +70,8 @@ import {cartCont as cart} from '../data/cart.js';
 // ]
 //let cartCont = [];
 // 1. display the cards/html on home page using js
-let cartCont = [];
+//let cartCont = [];
+//et products = [];
 let pros = '';
 products.forEach((product)=>{
   pros+=`<div class="product-container">
@@ -125,62 +127,49 @@ products.forEach((product)=>{
 
 })
 
-
-
 console.log(pros);
 document.querySelector('.js-products-grid').innerHTML=pros;
 
-//2. make cart button interactive
-//4. make the select options also interactivw when selected..total quantity should sum these also
-document.querySelectorAll(".adc-btn").forEach((button)=>{
-  button.addEventListener('click',()=>{
-    const productId= button.dataset.productId;
-    let matchingItem;
-    const selectQuantity = document.querySelector(`.js-select-quantity-${productId}`);
-    const quantity = Number(selectQuantity.value);
-    cartCont.forEach((item)=>{
-      if(productId === item.productId){
-        matchingItem=item;
-      }
-    });
 
-    if(matchingItem){
-      matchingItem.quantity+=quantity;
-    }
-    else{
-      cartCont.push({
-      productId,
-      quantity,
-    });
-    }
-    let addedEle = document.querySelector(`.added-${productId}`);
-    let timeoutId = null;
-    if(timeoutId != null){
-      clearTimeout(timeoutId);
-    }
-    timeoutId=setTimeout(()=>addedEle.classList.remove('new-added'),1500);
-    addedEle.classList.add('new-added');
 
-    
-    //3.  make cart quantity interactive
+
+function updateCartQuantity(productId){
 let totalQuantity = 0;
-cartCont.forEach((item)=>{
-  totalQuantity+=Number(item.quantity);
+cartCont.forEach((cartItem)=>{
+  totalQuantity+=Number(cartItem.quantity);
 });
 
 document.querySelector('.js-cart-quantity').innerHTML= totalQuantity;
 console.log(totalQuantity);
 console.log(cartCont);
+}
+
+
+
+//2. make cart button interactive
+//5. make the select options also interactivw when selected..total quantity should sum these also
+document.querySelectorAll(".adc-btn").forEach((button)=>{
+  button.addEventListener('click',()=>{
+    const productId= button.dataset.productId;
+    buttonAdded(button);
+    addToCart(productId);
+    updateCartQuantity(productId);
+    
+    });
+     });
+
+    
+
+    
+    //4.  make cart quantity interactive
+
 
 
 //3. amazon button transition:add->added->add
-const orgText = button.innerHTML;
-setTimeout(()=>{
-  button.innerHTML=orgText;
-  },1000);
-button.innerHTML = "Added";
-  });
-});
+
+ 
+
+
 
 
 

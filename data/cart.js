@@ -1,1 +1,47 @@
-export const cartCont = [];
+export const cartCont = [
+  { productId:'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+    quantity:2,
+  },
+
+  {
+    productId:'15b6fc6f-327a-4ec4-896f-486349e85a3d',
+    quantity:1,
+  }
+
+];
+export function addToCart(productId){
+  let matchingItem;
+    const selectQuantity = document.querySelector(`.js-select-quantity-${productId}`);
+    const quantity = Number(selectQuantity.value);
+  cartCont.forEach((cartItem)=>{
+      if(productId === cartItem.productId){
+        matchingItem=cartItem;
+      }
+    });
+
+    if(matchingItem){
+      matchingItem.quantity+=quantity;
+    }
+    else{
+      cartCont.push({
+      productId,
+      quantity,
+    });
+    }
+    let addedEle = document.querySelector(`.added-${productId}`);
+    let timeoutId = null;
+    if(timeoutId != null){
+      clearTimeout(timeoutId);
+    }
+    timeoutId=setTimeout(()=>addedEle.classList.remove('new-added'),1500);
+    addedEle.classList.add('new-added');
+}
+
+export function buttonAdded(butn){
+
+const orgText = butn.innerHTML;
+setTimeout(()=>{
+  butn.innerHTML=orgText;
+  },1000);
+butn.innerHTML = "Added";
+}
