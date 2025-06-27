@@ -66,7 +66,7 @@
 
 
 // ]
-
+// 1. display the cards/html on home page using js
 let pros = '';
 products.forEach((product)=>{
   pros+=`<div class="product-container">
@@ -127,7 +127,7 @@ products.forEach((product)=>{
 console.log(pros);
 document.querySelector('.js-products-grid').innerHTML=pros;
 
-
+//2. make cart button interactive
 document.querySelectorAll(".adc-btn").forEach((button)=>{
   button.addEventListener('click',()=>{
     const productId= button.dataset.productId;
@@ -139,7 +139,7 @@ document.querySelectorAll(".adc-btn").forEach((button)=>{
     });
 
     if(matchingItem){
-      matchingItem.quantity+=1;
+      matchingItem.quantity= Number(matchingItem.quantity)+1;
     }
     else{
       cartCont.push({
@@ -148,13 +148,34 @@ document.querySelectorAll(".adc-btn").forEach((button)=>{
     });
     }
     
-    console.log(cartCont);
-  })
-})
+    //3.  make cart quantity interactive
+let totalQuantity = 0;
+cartCont.forEach((item)=>{
+  totalQuantity+=Number(item.quantity);
+});
+
+document.querySelector('.js-cart-quantity').innerHTML= totalQuantity;
+console.log(totalQuantity);
+console.log(cartCont);
+
+
+//3. amazon button transition:add->added->add
+const orgText = button.innerHTML;
+setTimeout(()=>{
+  button.innerHTML=orgText;
+  },1000);
+button.innerHTML = "Added";
+  });
+});
 
 
 
-//amazon button transition:add->added->add
+
+
+
+
+
+
 
 
 
