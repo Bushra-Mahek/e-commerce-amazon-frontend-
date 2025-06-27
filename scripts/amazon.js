@@ -1,3 +1,4 @@
+import {cartCont as cart} from '../data/cart.js';
 // const info = [
 //   {
 //     image: "images/products/athletic-cotton-socks-6-pairs.jpg",
@@ -66,7 +67,9 @@
 
 
 // ]
+//let cartCont = [];
 // 1. display the cards/html on home page using js
+let cartCont = [];
 let pros = '';
 products.forEach((product)=>{
   pros+=`<div class="product-container">
