@@ -113,7 +113,7 @@ products.forEach((product)=>{
             Added
           </div>
 
-          <button class="add-to-cart-button button-primary">
+          <button class="add-to-cart-button button-primary  adc-btn" data-product-id="${product.id}">
             Add to Cart
           </button>
         </div>`
@@ -122,10 +122,39 @@ products.forEach((product)=>{
 
 })
 
+
+
 console.log(pros);
 document.querySelector('.js-products-grid').innerHTML=pros;
 
 
+document.querySelectorAll(".adc-btn").forEach((button)=>{
+  button.addEventListener('click',()=>{
+    const productId= button.dataset.productId;
+    let matchingItem;
+    cartCont.forEach((item)=>{
+      if(productId === item.productId){
+        matchingItem=item;
+      }
+    });
+
+    if(matchingItem){
+      matchingItem.quantity+=1;
+    }
+    else{
+      cartCont.push({
+      productId:productId,
+      quantity:1,
+    });
+    }
+    
+    console.log(cartCont);
+  })
+})
+
+
+
+//amazon button transition:add->added->add
 
 
 
