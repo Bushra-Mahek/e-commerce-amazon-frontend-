@@ -1,4 +1,6 @@
-export const cartCont = [
+export let cartCont = JSON.parse(localStorage.getItem('cartCont'));
+if(! cartCont){
+ cartCont = [
   { productId:'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
     quantity:2,
   },
@@ -9,6 +11,10 @@ export const cartCont = [
   }
 
 ];
+}
+function addStorage(){
+localStorage.setItem('cartCont',JSON.stringify(cartCont));
+};
 export function addToCart(productId){
   let matchingItem;
     const selectQuantity = document.querySelector(`.js-select-quantity-${productId}`);
@@ -35,7 +41,10 @@ export function addToCart(productId){
     }
     timeoutId=setTimeout(()=>addedEle.classList.remove('new-added'),1500);
     addedEle.classList.add('new-added');
+
+    
 }
+
 
 export function buttonAdded(butn){
 
@@ -44,4 +53,24 @@ setTimeout(()=>{
   butn.innerHTML=orgText;
   },1000);
 butn.innerHTML = "Added";
+addStorage();
+}
+
+
+
+
+export function deleteProd(pid){
+  let deletingItem;
+  let newcart = [];
+  cartCont.forEach((cartItem)=>{
+    if(cartItem.productId !== pid){
+      newcart.push(cartItem);
+    }
+    else{
+      console.log("deleting",cartItem);
+    }
+  });
+  cartCont = newcart;
+  console.log(cartCont);
+  addStorage();
 }
