@@ -41,7 +41,7 @@ export function addToCart(productId){
     }
     timeoutId=setTimeout(()=>addedEle.classList.remove('new-added'),1500);
     addedEle.classList.add('new-added');
-
+    addStorage();
     
 }
 
@@ -53,7 +53,7 @@ setTimeout(()=>{
   butn.innerHTML=orgText;
   },1000);
 butn.innerHTML = "Added";
-addStorage();
+
 }
 
 

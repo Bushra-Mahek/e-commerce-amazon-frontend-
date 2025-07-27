@@ -71,7 +71,7 @@ import {products} from '../data/products.js';
 //let cartCont = [];
 // 1. display the cards/html on home page using js
 //let cartCont = [];
-//et products = [];
+//let products = [];
 let pros = '';
 products.forEach((product)=>{
   pros+=`<div class="product-container">
@@ -133,11 +133,13 @@ document.querySelector('.js-products-grid').innerHTML=pros;
 
 
 
-function updateCartQuantity(productId){
+function updateCartQuantity(){
 let totalQuantity = 0;
 cartCont.forEach((cartItem)=>{
   totalQuantity+=Number(cartItem.quantity);
 });
+
+
 
 document.querySelector('.js-cart-quantity').innerHTML= totalQuantity;
 console.log(totalQuantity);
@@ -153,7 +155,7 @@ document.querySelectorAll(".adc-btn").forEach((button)=>{
     const productId= button.dataset.productId;
     buttonAdded(button);
     addToCart(productId);
-    updateCartQuantity(productId);
+    updateCartQuantity();
     
     });
      });
