@@ -74,3 +74,14 @@ export function deleteProd(pid){
   console.log(cartCont);
   addStorage();
 }
+
+
+//cart quantity usage 2 times 1st usage-upon header of amazon.js and also on header of checkout.js(also after delete of checkout.js)
+export function calculateCartQuantity(){
+  let totalQuantity = 0;
+
+  cartCont.forEach((cartItem)=>{
+  totalQuantity+=Number(cartItem.quantity);
+});
+  return totalQuantity;
+};

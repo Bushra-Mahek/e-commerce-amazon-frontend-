@@ -1,4 +1,4 @@
-import {cartCont,addToCart,buttonAdded} from '../data/cart.js';
+import {cartCont,addToCart,buttonAdded,calculateCartQuantity} from '../data/cart.js';
 import {products} from '../data/products.js';
 // const info = [
 //   {
@@ -133,19 +133,10 @@ document.querySelector('.js-products-grid').innerHTML=pros;
 
 
 
-function updateCartQuantity(){
-let totalQuantity = 0;
-cartCont.forEach((cartItem)=>{
-  totalQuantity+=Number(cartItem.quantity);
-});
-
-
-
-document.querySelector('.js-cart-quantity').innerHTML= totalQuantity;
-console.log(totalQuantity);
+const cartQuantity = calculateCartQuantity();
+document.querySelector('.js-cart-quantity').innerHTML= cartQuantity;
+console.log(cartQuantity);
 console.log(cartCont);
-}
-
 
 
 //2. make cart button interactive
@@ -155,8 +146,8 @@ document.querySelectorAll(".adc-btn").forEach((button)=>{
     const productId= button.dataset.productId;
     buttonAdded(button);
     addToCart(productId);
-    updateCartQuantity();
-    
+    const cartQuan = calculateCartQuantity();
+    document.querySelector('.js-cart-quantity').innerHTML= cartQuan;
     });
      });
 

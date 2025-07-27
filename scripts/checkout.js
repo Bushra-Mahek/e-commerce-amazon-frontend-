@@ -1,4 +1,4 @@
-import {cartCont, deleteProd} from '../data/cart.js';
+import {calculateCartQuantity, cartCont, deleteProd,} from '../data/cart.js';
 import {products} from '../data/products.js';
 import {toDollars} from './utils/currency.js';
 
@@ -95,18 +95,11 @@ cartCont.forEach((cartItem)=>{
   `;
 });
 
+//update cart quantity on the header of checkout page.
+let totalQuantity = calculateCartQuantity();
 
-function updateCartQuantity(){
-  let totalQuantity = 0;
+document.querySelector('.js-cart-items').innerHTML= `${totalQuantity} items`;
 
-  cartCont.forEach((cartItem)=>{
-  totalQuantity+=Number(cartItem.quantity);
-});
-
-   document.querySelector('.js-cart-items').innerHTML= `${totalQuantity} items`;
-}
-
-updateCartQuantity();
 
 
 document.querySelector('.js-cart-summary').innerHTML=cartSummary;
@@ -119,7 +112,9 @@ document.querySelectorAll('.js-delete-link').forEach((link)=>{
     const container = document.querySelector(`.js-cart-item-container-${productId}`);
     container.remove();
 
-    updateCartQuantity();
+    let totalQuan = calculateCartQuantity();
+
+     document.querySelector('.js-cart-items').innerHTML= `${totalQuan} items`;
 
   });
 });
