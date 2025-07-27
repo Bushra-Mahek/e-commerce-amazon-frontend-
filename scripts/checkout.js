@@ -1,8 +1,14 @@
+
 import {calculateCartQuantity, cartCont, deleteProd, addStorage} from '../data/cart.js';
 import {products} from '../data/products.js';
 import {toDollars} from './utils/currency.js';
 
-let cartSummary = ' ';
+
+
+  //1. f1
+  //generates all cart item html
+function renderOrderSummary(){
+    let cartSummary = ' ';
 
 cartCont.forEach((cartItem)=>{
   const productId = cartItem.productId;
@@ -16,7 +22,7 @@ cartCont.forEach((cartItem)=>{
     console.warn(`No matching product found for productId: ${productId}`);
     return; // Skip this cart item
   }
- 
+
   cartSummary+=`<div class="cart-item-container js-cart-item-container-${productId}">
             <div class="delivery-date">
               Delivery date: Tuesday, June 21
@@ -95,27 +101,38 @@ cartCont.forEach((cartItem)=>{
   `;
 });
 
+document.querySelector('.js-cart-summary').innerHTML=cartSummary;
+updateCartQuantityDisplay();
+attachEventListeners();
+
+  }
+  
+
+
+
+//fun 2
 //update cart quantity on the header of checkout page.
+function updateCartQuantityDisplay(){
 let totalQuantity = calculateCartQuantity();
 
+
 document.querySelector('.js-cart-items').innerHTML= `${totalQuantity} items`;
+}
 
 
-
-document.querySelector('.js-cart-summary').innerHTML=cartSummary;
-
+//fun 3
+// This is crucial because when you re-render HTML, new elements don't have listeners.
+function attachEventListeners(){
 document.querySelectorAll('.js-delete-link').forEach((link)=>{
   link.addEventListener('click',()=>{
     const productId = link.dataset.productId;
     deleteProd(productId);
 
     const container = document.querySelector(`.js-cart-item-container-${productId}`);
-    container.remove();
 
-    let totalQuan = calculateCartQuantity();
-
-     document.querySelector('.js-cart-items').innerHTML= `${totalQuan} items`;
-
+    //instead of  container.remove(); & let totalQuan = calculateCartQuantity();document.querySelector('.js-cart-items').innerHTML= `${totalQuan} items`;
+    //better to re render again which ensures robustness and cart display is always sync with cartCont data
+    renderOrderSummary();
   });
 });
 
@@ -132,20 +149,36 @@ document.querySelectorAll('.js-update-link').forEach((ulink)=>{
     console.log(productId);
     const cont = document.querySelector(`.js-cart-item-container-${productId}`);
     cont.classList.add('is-editing-quantity');
+
+     const quantityLabel = cont.querySelector('.quantity-label');
+      const quantityInput = cont.querySelector('.quantity-input');
+    if (quantityInput && quantityLabel) {
+                quantityInput.value = quantityLabel.textContent;
+    }
+  });
+
+  //add keydown listener
+  ulink.addEventListener('keydown',(event)=>{
+    if(event.key === 'Enter'){
+      event.preventDefault();
+      ulink.click();//simulates a click
+    }
   });
 });
 
+//save link functionality
 document.querySelectorAll('.js-save-link').forEach((slink)=>{
   slink.addEventListener('click',()=>{
     const productId = slink.dataset.productId;
     console.log(productId);
     const container = document.querySelector(`.js-cart-item-container-${productId}`);
-    container.classList.remove('is-editing-quantity');
+    
 
     const quantityInput = container.querySelector('.quantity-input');
     const newQuantity = Number(quantityInput.value);
     if(isNaN(newQuantity) || newQuantity<=0){
-      alert('please enter a valid a quantity');
+      alert('please enter a valid a quantity whole no. quantity greater than zero');
+      quantityInput.focus();
       return;
     }
 
@@ -162,17 +195,45 @@ document.querySelectorAll('.js-save-link').forEach((slink)=>{
       if(quantityLabel){
         quantityLabel.textContent=newQuantity;
       }
-    const cartquan = document.querySelector('.js-cart-items');
-    cartquan.innerHTML= calculateCartQuantity();
+      updateCartQuantityDisplay();
     }
 
     else{
       console.log('product not found in cart:',productId);
     }
 
- 
+     // Remove the editing class to revert the display
     container.classList.remove('is-editing-quantity');
+  });
+
+    //adding keydown listener
+    
+     slink.addEventListener('keydown',(event)=>{
+      if(event.key === 'Enter'){
+        event.preventDefault();
+        slink.click();
+      }
+     });
 
 
   });
-});
+
+  //keydown listner for enter on the quantity field
+  document.querySelectorAll('.quantity-input').forEach((input)=>{
+    input.addEventListener('keydown',(event)=>{
+      if(event.key === 'Enter'){
+        event.preventDefault();
+        //find closest save button for this input
+        const container = input.closest('.cart-item-container');
+        const savelink = container.querySelector('.js-save-link');
+        if(savelink){
+          savelink.click();
+        }
+      }
+    });
+  });
+
+}
+
+//Initial render when page loads
+renderOrderSummary();

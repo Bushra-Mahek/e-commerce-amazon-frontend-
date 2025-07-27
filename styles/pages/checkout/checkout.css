@@ -221,12 +221,12 @@
 }
 
 .cart-item-container.is-editing-quantity .quantity-input{
-  display:initial;
+  display:inline;
 
 }
 
 .cart-item-container.is-editing-quantity .js-save-link{
-  display:initial;
+  display:inline;
 }
 
 .cart-item-container.is-editing-quantity .update-link{
