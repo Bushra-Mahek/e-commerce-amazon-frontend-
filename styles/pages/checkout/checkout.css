@@ -216,21 +216,22 @@
   display:none;
 }
 
-.save-quantity-link{
+.js-save-link{
   display: none;
 }
 
-.is-editing-quantity .quantity-input{
+.cart-item-container.is-editing-quantity .quantity-input{
   display:initial;
 
 }
 
-.is-editing-quantity .save-quantity-link{
+.cart-item-container.is-editing-quantity .js-save-link{
   display:initial;
 }
 
-.is-editing-quantity .update-link{
+.cart-item-container.is-editing-quantity .update-link{
   display: none;
 }
+
 
 

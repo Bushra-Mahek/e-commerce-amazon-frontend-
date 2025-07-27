@@ -12,7 +12,7 @@ if(! cartCont){
 
 ];
 }
-function addStorage(){
+export function addStorage(){
 localStorage.setItem('cartCont',JSON.stringify(cartCont));
 };
 export function addToCart(productId){

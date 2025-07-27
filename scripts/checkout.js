@@ -1,4 +1,4 @@
-import {calculateCartQuantity, cartCont, deleteProd,} from '../data/cart.js';
+import {calculateCartQuantity, cartCont, deleteProd, addStorage} from '../data/cart.js';
 import {products} from '../data/products.js';
 import {toDollars} from './utils/currency.js';
 
@@ -38,7 +38,7 @@ cartCont.forEach((cartItem)=>{
                     Quantity: <span class="quantity-label">${cartItem.quantity}</span>
                   </span>
                   <span class="update-quantity-link link-primary js-update-link" data-product-id="${matchItem.id}">
-                    <span class= "update-link">Update</span><input class = "quantity-input"> <span class="save-quantity-link link-primary">Save</span>
+                    <span class= "update-link">Update</span><input type=number class = "quantity-input"> <span class="save-quantity-link link-primary js-save-link" data-product-id="${matchItem.id}">Save</span>
                   </span>
                   <span class="delete-quantity-link link-primary js-delete-link" data-product-id="${matchItem.id}">
                     Delete
@@ -132,5 +132,47 @@ document.querySelectorAll('.js-update-link').forEach((ulink)=>{
     console.log(productId);
     const cont = document.querySelector(`.js-cart-item-container-${productId}`);
     cont.classList.add('is-editing-quantity');
-  })
-})
+  });
+});
+
+document.querySelectorAll('.js-save-link').forEach((slink)=>{
+  slink.addEventListener('click',()=>{
+    const productId = slink.dataset.productId;
+    console.log(productId);
+    const container = document.querySelector(`.js-cart-item-container-${productId}`);
+    container.classList.remove('is-editing-quantity');
+
+    const quantityInput = container.querySelector('.quantity-input');
+    const newQuantity = Number(quantityInput.value);
+    if(isNaN(newQuantity) || newQuantity<=0){
+      alert('please enter a valid a quantity');
+      return;
+    }
+
+    let foundItem = false;
+    cartCont.forEach((cartItem)=>{
+      if(cartItem.productId === productId){
+        cartItem.quantity = newQuantity;
+        foundItem = true;
+      } 
+    });
+    if(foundItem){
+      addStorage();
+      const quantityLabel = container.querySelector('.quantity-label');
+      if(quantityLabel){
+        quantityLabel.textContent=newQuantity;
+      }
+    const cartquan = document.querySelector('.js-cart-items');
+    cartquan.innerHTML= calculateCartQuantity();
+    }
+
+    else{
+      console.log('product not found in cart:',productId);
+    }
+
+ 
+    container.classList.remove('is-editing-quantity');
+
+
+  });
+});
