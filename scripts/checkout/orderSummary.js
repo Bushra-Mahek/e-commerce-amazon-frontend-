@@ -6,6 +6,7 @@ import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 
 
 import {deliveryOptions, getDeliveryOption} from '../../data/deliveryOptions.js';
+import {renderPaymentSummary} from './paymentSummary.js';
 
 
 const td = dayjs();
@@ -157,6 +158,8 @@ document.querySelectorAll('.js-delete-link').forEach((link)=>{
     //instead of  container.remove(); & let totalQuan = calculateCartQuantity();document.querySelector('.js-cart-items').innerHTML= `${totalQuan} items`;
     //better to re render again which ensures robustness and cart display is always sync with cartCont data
     renderOrderSummary();
+    renderPaymentSummary();
+    ren
   });
 });
 
@@ -265,6 +268,7 @@ document.querySelectorAll('.js-save-link').forEach((slink)=>{
     //const productId = option.dataset.productId;
     //const deliveryOptionId = option.dataset.deliveryOptionId
     updateDeliveryOption(productId, deliveryOptionId);
+    renderPaymentSummary();
 
     
 //Initial render when page loads

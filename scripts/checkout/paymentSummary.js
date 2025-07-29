@@ -3,14 +3,16 @@ import {getProduct} from '../../data/products.js';
 import {getDeliveryOption} from '../../data/deliveryOptions.js';
 import {toDollars} from '../utils/currency.js'; 
 
-export function paymentSummary(){
+export function renderPaymentSummary(){
   let totalProductsPrice = 0;
   let shippingPrice = 0;
 
-
+  let itemsNo = 0;
   cartCont.forEach((cartItem)=>{
     const product = getProduct(cartItem.productId);
     totalProductsPrice += product.priceCents*cartItem.quantity;
+
+    itemsNo+=1;
 
 
     const deliveryOption = getDeliveryOption(cartItem.deliveryOptionId);
@@ -32,7 +34,7 @@ export function paymentSummary(){
           </div>
 
           <div class="payment-summary-row">
-            <div>Items (3):</div>
+            <div>Items ${itemsNo}:</div>
             <div class="payment-summary-money">₹${toDollars(totalProductsPrice)}</div>
           </div>
 
