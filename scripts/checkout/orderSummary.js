@@ -1,11 +1,11 @@
 import {calculateCartQuantity, cartCont, deleteProd, addStorage,updateDeliveryOption} from '../../data/cart.js';
-import {products} from '../../data/products.js';
+import {products,getProduct} from '../../data/products.js';
 import {toDollars} from '.././utils/currency.js';
 
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 
 
-import {deliveryOptions} from '../../data/deliveryOptions.js';
+import {deliveryOptions, getDeliveryOption} from '../../data/deliveryOptions.js';
 
 
 const td = dayjs();
@@ -21,12 +21,7 @@ export function renderOrderSummary(){
 
 cartCont.forEach((cartItem)=>{
   const productId = cartItem.productId;
-  let matchItem;
-  products.forEach((product)=>{
-    if(product.id === productId){
-      matchItem = product;
-    }
-  });
+  const matchItem = getProduct(productId);
   if (!matchItem) {
     console.warn(`No matching product found for productId: ${productId}`);
     return; // Skip this cart item
@@ -35,12 +30,8 @@ cartCont.forEach((cartItem)=>{
   const deliveryOptionId = cartItem.deliveryOptionId;
 
 
-  let deliveryOption;
-  deliveryOptions.forEach((option)=>{
-    if(option.deliveryId === deliveryOptionId){
-      deliveryOption = option;
-    }
-});
+  let deliveryOption = getDeliveryOption(deliveryOptionId);
+ 
 let dateString='';
 if(deliveryOption){
     const tday = dayjs();
