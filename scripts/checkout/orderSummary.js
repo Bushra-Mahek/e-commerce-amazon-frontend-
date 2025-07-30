@@ -5,10 +5,28 @@ import {toDollars} from '.././utils/currency.js';
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 
 
-import {deliveryOptions, getDeliveryOption} from '../../data/deliveryOptions.js';
+import {deliveryOptions, getDeliveryOption, calculateDeliveryDate} from '../../data/deliveryOptions.js';
 import {renderPaymentSummary} from './paymentSummary.js';
+import  isSatSun from '../utils/weekend fun.js';
+import {updateCartQuantity} from './checkoutheader.js';
 
 
+
+
+
+
+// const daytd = dayjs();
+// const day5 = daytd.add(3,'day');
+// console.log(day5.format('MMMM D'));
+// console.log(isSatSun(day5));
+
+// const month1 = daytd.subtract(2,'month');
+// console.log(month1.format('MMMM D'));
+
+// console.log(month1.format('dddd'));
+
+
+// console.log(isWeekend(day5));
 // const td = dayjs();
 // const d7 = td.add(3,'day');
 // console.log(d7.format('dddd, MMMM D'));
@@ -33,13 +51,7 @@ cartCont.forEach((cartItem)=>{
 
   let deliveryOption = getDeliveryOption(deliveryOptionId);
  
-let dateString='';
-if(deliveryOption){
-    const tday = dayjs();
-    const deliveryDate = tday.add(deliveryOption.deliveryDays,'days');
-    dateString = deliveryDate.format('dddd, MMMM D');
-}
- 
+  const dateString = calculateDeliveryDate(deliveryOption);
 
 
 
@@ -84,7 +96,7 @@ if(deliveryOption){
 });
 
 document.querySelector('.js-cart-summary').innerHTML=cartSummary;
-updateCartQuantityDisplay();
+
 attachEventListeners();
 
   };
@@ -92,13 +104,11 @@ attachEventListeners();
 
   
 
-
+//fun 5 deliveryOption
 function deliveryOptionsHtml(matchItem,cartItem){
   let delvHtml = ' ';
   deliveryOptions.forEach((deliveryOption)=>{
-    const tday = dayjs();
-    const deliveryDate = tday.add(deliveryOption.deliveryDays,'days');
-    const dateString = deliveryDate.format('dddd, MMMM D');
+    const dateString = calculateDeliveryDate(deliveryOption);
     const priceString = deliveryOption.deliveryPrice === 0
       ? 'FREE'
       : `₹${toDollars(deliveryOption.deliveryPrice)}-`;
@@ -137,12 +147,12 @@ function deliveryOptionsHtml(matchItem,cartItem){
 
 //fun 2
 //update cart quantity on the header of checkout page.
-function updateCartQuantityDisplay(){
-let totalQuantity = calculateCartQuantity();
+// function updateCartQuantityDisplay(){
+// let totalQuantity = calculateCartQuantity();
 
 
-document.querySelector('.js-cart-items').innerHTML= `${totalQuantity} items`;
-}
+// document.querySelector('.js-cart-items').innerHTML= `${totalQuantity} items`;
+// }
 
 
 //fun 3
@@ -159,7 +169,8 @@ document.querySelectorAll('.js-delete-link').forEach((link)=>{
     //better to re render again which ensures robustness and cart display is always sync with cartCont data
     renderOrderSummary();
     renderPaymentSummary();
-    ren
+    updateCartQuantity();
+    
   });
 });
 
@@ -223,7 +234,9 @@ document.querySelectorAll('.js-save-link').forEach((slink)=>{
       if(quantityLabel){
         quantityLabel.textContent=newQuantity;
       }
-      updateCartQuantityDisplay();
+      renderOrderSummary();
+      renderPaymentSummary();
+      updateCartQuantity();
     }
 
     else{
