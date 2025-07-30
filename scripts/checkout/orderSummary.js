@@ -9,9 +9,9 @@ import {deliveryOptions, getDeliveryOption} from '../../data/deliveryOptions.js'
 import {renderPaymentSummary} from './paymentSummary.js';
 
 
-const td = dayjs();
-const d7 = td.add(3,'day');
-console.log(d7.format('dddd, MMMM D'));
+// const td = dayjs();
+// const d7 = td.add(3,'day');
+// console.log(d7.format('dddd, MMMM D'));
 
 
 
@@ -181,6 +181,7 @@ document.querySelectorAll('.js-update-link').forEach((ulink)=>{
       const quantityInput = cont.querySelector('.quantity-input');
     if (quantityInput && quantityLabel) {
                 quantityInput.value = quantityLabel.textContent;
+                renderPaymentSummary();
     }
   });
 
