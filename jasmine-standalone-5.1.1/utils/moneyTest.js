@@ -1,4 +1,4 @@
-import {toDollars} from '../scripts/utils/currency.js';
+import {toDollars} from '../../scripts/utils/currency.js';
 describe('test suite: toDollar', ()=>{
   it('converts dollars to  cents',()=>{
     expect(toDollars(2095)).toEqual('20.95');

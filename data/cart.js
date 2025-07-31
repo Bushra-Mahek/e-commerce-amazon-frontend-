@@ -1,5 +1,9 @@
-export let cartCont = JSON.parse(localStorage.getItem('cartCont'));
-if(! cartCont){
+export let cartCont;
+loadFromStorage();
+
+export function loadFromStorage(){
+  cartCont = JSON.parse(localStorage.getItem('cartCont'));
+if(!cartCont){
  cartCont = [
   { productId:'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
     quantity:2,
@@ -14,6 +18,8 @@ if(! cartCont){
 
 ];
 }
+}
+
 export function addStorage(){
 localStorage.setItem('cartCont',JSON.stringify(cartCont));
 };
