@@ -55,7 +55,7 @@ cartCont.forEach((cartItem)=>{
 
 
 
-  cartSummary+=`<div class="cart-item-container js-cart-item-container-${productId}">
+  cartSummary+=`<div class="cart-item-container js-cart-item-container js-cart-item-container-${productId}">
             <div class="delivery-date">
               Delivery date: ${dateString}
             </div>
@@ -71,14 +71,14 @@ cartCont.forEach((cartItem)=>{
                 <div class="product-price">
                   ₹${toDollars(matchItem.priceCents)}
                 </div>
-                <div class="product-quantity">
+                <div class="product-quantity js-product-quantity-${productId}">
                   <span>
                     Quantity: <span class="quantity-label">${cartItem.quantity}</span>
                   </span>
                   <span class="update-quantity-link link-primary js-update-link" data-product-id="${matchItem.id}">
                     <span class= "update-link">Update</span><input type=number class = "quantity-input"> <span class="save-quantity-link link-primary js-save-link" data-product-id="${matchItem.id}">Save</span>
                   </span>
-                  <span class="delete-quantity-link link-primary js-delete-link" data-product-id="${matchItem.id}">
+                  <span class="delete-quantity-link link-primary js-delete-link js-delete-link-${matchItem.id}" data-product-id="${matchItem.id}">
                     Delete
                   </span>
                 </div>
@@ -156,6 +156,7 @@ function deliveryOptionsHtml(matchItem,cartItem){
 
 
 //fun 3
+//delete button functionality
 // This is crucial because when you re-render HTML, new elements don't have listeners.
 function attachEventListeners(){
 document.querySelectorAll('.js-delete-link').forEach((link)=>{
